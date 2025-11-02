@@ -1,0 +1,77 @@
+/*
+ * style.css
+ * Basic styles to make the app look clean and modern.
+ */
+
+:root {
+  --background-color: #121212;
+  --card-color: #1e1e1e;
+  --primary-color: #03dac6;
+  --text-color: #e0e0e0;
+  --text-muted: #888;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  width: 90%;
+  max-width: 900px;
+  background-color: var(--card-color);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+header h1 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+
+header p {
+  color: var(--text-muted);
+  font-size: 1.1em;
+  margin-bottom: 24px;
+}
+
+.controls {
+  margin-bottom: 24px;
+}
+
+/* Style the file input button */
+input[type="file"] {
+  color: var(--text-color);
+}
+
+input[type="file"]::file-selector-button {
+  background-color: var(--primary-color);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: #018786;
+}
+
+#movie-player {
+  width: 100%;
+  border-radius: 8px;
+  background-color: #000;
+  /* Ensure the video element doesn't have a default size before loading */
+  min-height: 200px; 
+}
