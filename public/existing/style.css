@@ -1,0 +1,145 @@
+/*
+ * style.css
+ * Basic styles to make the app look clean and modern.
+ */
+
+:root {
+  --background-color: #121212;
+  --card-color: #1e1e1e;
+  --primary-color: #03dac6;
+  --text-color: #e0e0e0;
+  --text-muted: #888;
+  /* Add a glow effect variable */
+  --glow-shadow: 0 0 10px var(--primary-color), 0 0 20px rgba(3, 218, 198, 0.5);
+}
+
+/* --- Add Animation Keyframes --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(3, 218, 198, 0.5), 0 0 20px rgba(3, 218, 198, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 20px var(--primary-color), 0 0 40px rgba(3, 218, 198, 0.7);
+  }
+}
+/* --- End Keyframes --- */
+
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Add a subtle background gradient */
+  background-color: var(--background-color);
+  background-image: radial-gradient(circle at 100% 0%, rgba(3, 218, 198, 0.1) 0%, rgba(18, 18, 18, 0) 30%);
+  color: var(--text-color);
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  /* THIS IS THE FIX: 
+    Change the flex direction to stack items vertically.
+  */
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  width: 90%;
+  max-width: 900px;
+  background-color: var(--card-color);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  /* Add a fade-in animation */
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+header h1 {
+  margin-top: 0;
+  color: var(--primary-color);
+  /* Add the pulse animation */
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+header p {
+  color: var(--text-muted);
+  font-size: 1.1em;
+  margin-bottom: 24px;
+}
+
+.controls {
+  margin-bottom: 24px;
+}
+
+/* Style the file input button */
+input[type="file"] {
+  color: var(--text-color);
+}
+
+input[type="file"]::file-selector-button {
+  background-color: var(--primary-color);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  /* Add transition for hover */
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: #018786;
+  /* Add a little "pop" on hover */
+  transform: scale(1.05);
+}
+
+#movie-player {
+  width: 100%;
+  border-radius: 8px;
+  background-color: #000;
+  /* Ensure the video element doesn't have a default size before loading */
+  min-height: 200px; 
+}
+
+/* --- Add Footer Styles --- */
+footer {
+  text-align: center;
+  
+  /* --- FIX 1: Pin to bottom --- */
+  position: absolute;
+  bottom: 20px; /* 20px from the bottom edge */
+  left: 0;
+  right: 0;
+  /* --- End Fix 1 --- */
+  
+  /* Make it glow! Use the primary color */
+  color: var(--primary-color);
+  
+  /* --- FIX 2: h2 Kinda Size --- */
+  font-size: 1.75em; /* Much bigger */
+  font-weight: 600;  /* Bolder */
+  /* --- End Fix 2 --- */
+  
+  /* Make it a bit more visible */
+  opacity: 0.9; 
+  
+  /* Add the 'pulseGlow' animation, starting after the fade-in. */
+  animation: fadeInUp 1s ease-out 0.5s forwards, 
+             pulseGlow 3s infinite ease-in-out 1.5s; 
+  
+  opacity: 0; /* Start hidden for fadeInUp */
+}
+

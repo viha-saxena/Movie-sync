@@ -1,87 +1,259 @@
-/*
- * style.css
- * Basic styles to make the app look clean and modern.
- */
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
-:root {
-  --background-color: #121212;
-  --card-color: #1e1e1e;
-  --primary-color: #03dac6;
-  --text-color: #e0e0e0;
-  --text-muted: #888;
-  /* Add a glow effect variable */
-  --glow-shadow: 0 0 10px var(--primary-color), 0 0 20px rgba(3, 218, 198, 0.5);
+/* --- NEW: Animation Keyframes --- */
+@keyframes glowPulse {
+  0%, 100% {
+    text-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color);
+  }
+  50% {
+    text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color), 0 0 30px var(--primary-color);
+  }
 }
 
-/* --- Add Animation Keyframes --- */
-@keyframes fadeInUp {
+@keyframes scrollUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(100px); /* Start from below the screen */
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0); /* Settle at its final position */
   }
 }
 
-@keyframes pulseGlow {
-  0%, 100% {
-    text-shadow: 0 0 10px rgba(3, 218, 198, 0.5), 0 0 20px rgba(3, 218, 198, 0.2);
-  }
-  50% {
-    text-shadow: 0 0 20px var(--primary-color), 0 0 40px rgba(3, 218, 198, 0.7);
-  }
+
+:root {
+  --textureWood: url("https://cdn.pixabay.com/photo/2014/04/05/11/09/wood-314774_960_720.jpg");
+  --primary-color: #03dac6;
 }
-/* --- End Keyframes --- */
 
-
+/* --- General Body & Overlay --- */
 body {
+  background: black;
+  overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  /* Add a subtle background gradient */
-  background-color: var(--background-color);
-  background-image: radial-gradient(circle at 100% 0%, rgba(3, 218, 198, 0.1) 0%, rgba(18, 18, 18, 0) 30%);
-  color: var(--text-color);
-  margin: 0;
-  padding: 20px;
+  color: #e0e0e0;
+}
+
+.controls-overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  height: 100%;
+  width: 100%;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Corrected 'align: items' */
+}
+
+.controls-overlay button {
+  position: relative;
+  color: white;
+  background: transparent;
+  border: 2px solid white;
+  outline: none;
+  padding: 12px 32px;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2em;
+  border-radius: 12px;
+  transition: ease all 0.3s;
+  cursor: pointer;
+}
+
+.controls-overlay button:hover {
+  background: white;
+  color: black;
+}
+
+/* --- 3D Cinema Environment --- */
+.viewport {
+  perspective: 1400px;
+  transform-style: preserve-3d;
+  width: 640px;
+  height: 480px;
+  position: absolute;
+  margin: auto;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+}
+
+.scene {
+  transform-style: preserve-3d;
+  transform: rotateY(0deg) translatey(15em) translateZ(500px) rotateX(75deg);
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 25em 10em rgba(0, 0, 0, 1) inset;
+  background-color: #48151e;
+  background: radial-gradient(circle, transparent 20%, #380d0d 20%, #380d0d 80%, transparent 80%, transparent), radial-gradient(circle, transparent 20%, #48151e 20%, #48151e 80%, transparent 80%, transparent) 25px 25px, linear-gradient(#641220 2px, transparent 2px) 0 -1px, linear-gradient(90deg, #641220 2px, #48151e 2px) -1px 0;
+  background-size: 50px 50px, 50px 50px, 25px 25px, 25px 25px;
+  position: relative;
+  transition: box-shadow 1.5s ease-out; /* Added transition for smooth lighting change */
+}
+
+.scene:before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--textureWood) repeat-x;
+  background-size: 120px 100%;
+  box-shadow: 0 250px 120px 0 rgba(0, 0, 0, 0.6) inset;
+  transform: translateZ(480px) translatey(0px);
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: box-shadow 1.5s ease-out; /* Added transition for smooth lighting change */
+}
+
+/* Darkened state after animation */
+.scene.darken {
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.7), inset 0 0 250px 50px rgba(25, 25, 40, 0.3); 
+}
+.scene.darken:before {
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.8);
+}
+.scene.darken .stage:after {
+  opacity: 1;
+}
+.scene.darken .stage:before {
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.8);
+}
+.scene.darken .big-wall:after {
+  opacity: 1;
+}
+.scene.darken .chairs-group .chair {
+  box-shadow: 1px 1em 3em 0.5em rgba(0, 0, 0, 0.9) inset, 0 -4px 0 rgba(255, 255, 255, 0.05) inset; 
+}
+
+/* --- Chair state for "Lights On" --- */
+.chairs-group .chair {
+  /* This is the default "Lights On" state from before */
+  box-shadow: 1px 1em 3em 0.5em rgba(0, 0, 0, 0.8) inset, 0 -4px 0 rgba(255, 255, 255, 0.1) inset;
+  transition: box-shadow 1.5s ease-out; /* Added transition for smooth lighting change */
+}
+
+
+.stage {
+  transform: translateZ(3em);
+  background: var(--textureWood) repeat-x;
+  background-size: 120px 100%;
+  box-shadow: 0 50px 80px 0 rgba(0, 0, 0, 0.5) inset;
+  width: 100%;
+  height: 10em;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.stage:before {
+  display: block;
+  position: absolute;
+  top: 10em;
+  left: 0;
+  content: "";
+  transform: translateY(-25px) translateZ(-25px) rotateX(90deg);
+  background: var(--textureWood) repeat-x;
+  background-size: 120px 100%;
+  box-shadow: 0 15px 20px 0px rgba(0, 0, 0, 0.8) inset;
+  width: 100%;
+  height: 50px;
+}
+
+.stage:after {
+  background: rgba(0, 0, 0, 0.8);
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  height: 100%;
+  transition: ease all 0.4s;
+}
+
+.big-wall {
+  background: var(--textureWood) repeat-x;
+  background-size: 120px 100%;
+  box-shadow: 0 40px 50px 0 rgba(0, 0, 0, 0.5) inset, 0 -60px 40px 10px rgba(0, 0, 0, 0.6) inset;
+  height: 100%;
+  transform: rotateX(-90deg) translatez(-400px) translatey(-50%);
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.big-wall:after {
+  background: rgba(0, 0, 0, 0.8);
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  height: 100%;
+  transition: ease all 0.4s;
+}
+
+/* --- Movie Player & Controls Container --- */
+.movie-container {
+  transform-style: preserve-3d;
+  width: 85%;
+  height: 65%;
+  margin: 0 auto;
+  transform: translateY(25%);
+  position: relative;
+  z-index: 3;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-}
-
-.container {
-  width: 90%;
-  max-width: 900px;
-  background-color: var(--card-color);
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   text-align: center;
-  /* Add a fade-in animation */
-  animation: fadeInUp 0.6s ease-out forwards;
 }
 
-header h1 {
-  margin-top: 0;
-  color: var(--primary-color);
-  /* Add the pulse animation */
-  animation: pulseGlow 2.5s infinite ease-in-out;
+#movie-player {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  border: 3px solid #111;
+  box-shadow: 0 0 30px rgba(3, 218, 198, 0.4);
+  /* Initially hidden until a file is loaded */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  position: relative; 
+  z-index: 2; 
 }
 
-header p {
-  color: var(--text-muted);
-  font-size: 1.1em;
-  margin-bottom: 24px;
+#clonePlayerCanvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  filter: blur(30px);
+  transform: scale(0.9);
+  z-index: -1;
+  left: 0;
+  top: 0;
+  opacity: 0.6;
 }
 
-.controls {
-  margin-bottom: 24px;
+/* --- File Loader inside the cinema --- */
+#file-loader {
+  opacity: 0; /* Hidden by default */
+  pointer-events: none; /* Not clickable by default */
+  transition: opacity 0.8s ease;
+  position: absolute; /* Keep it centered */
 }
 
-/* Style the file input button */
-input[type="file"] {
-  color: var(--text-color);
+#file-loader h1 {
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    /* --- MODIFIED: Added neon glow --- */
+    text-shadow: 0 0 8px var(--primary-color), 0 0 16px rgba(3, 218, 198, 0.5);
+}
+
+#file-loader p {
+    font-size: 1.1em;
+    margin-bottom: 24px;
 }
 
 input[type="file"]::file-selector-button {
@@ -89,36 +261,90 @@ input[type="file"]::file-selector-button {
   border: none;
   padding: 10px 16px;
   border-radius: 6px;
-  color: #000;
+  color: #111;
   font-weight: bold;
   cursor: pointer;
-  /* Add transition for hover */
   transition: background-color 0.2s, transform 0.2s;
 }
 
 input[type="file"]::file-selector-button:hover {
-  background-color: #018786;
-  /* Add a little "pop" on hover */
+  background-color: #fff;
   transform: scale(1.05);
 }
 
-#movie-player {
-  width: 100%;
-  border-radius: 8px;
-  background-color: #000;
-  /* Ensure the video element doesn't have a default size before loading */
-  min-height: 200px; 
+
+/* --- Chair Styling --- */
+.chairs-group {
+  position: absolute;
+  transform-style: preserve-3d;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  gap: 20px 5px;
+  top: 15em;
+  left: 0;
+  height: 50px;
+  width: 45%;
 }
 
-/* --- Add Footer Styles --- */
+.chairs-group.right {
+  right: 0;
+  left: unset;
+}
+
+.chairs-group.right .chair:after {
+  transform: rotateY(90deg) translate3D(-28px, -50px, -27px);
+}
+
+.chair {
+  transform-style: preserve-3d;
+  height: 100px;
+  background: linear-gradient(0deg, #460000, #220101);
+  transform: rotateX(90deg) translateY(50px);
+  border-radius: 0 0 15px 15px / 50%;
+  /* box-shadow: 1px 1em 3em 0.5em rgba(0, 0, 0, 0.8) inset, 0 -4px 0 rgba(255, 255, 255, 0.1) inset; */ /* MOVED */
+}
+
+.chair:before {
+  content: "";
+  display: block;
+  height: 50px;
+  transform: rotatex(90deg) translatey(25px);
+  background: linear-gradient(0deg, #460000, #220101);
+  box-shadow: 1px 1em 3em 0.5em rgba(0, 0, 0, 0.8) inset;
+}
+
+.chair:after {
+  content: "";
+  display: block;
+  height: 25px;
+  background: linear-gradient(0deg, #460000, #220101);
+  box-shadow: 1px 1em 3em 0.5em rgba(0, 0, 0, 0.8) inset;
+  transform: rotateY(90deg) translate3D(-28px, -50px, 27px);
+}
+
+/* --- Footer --- */
 footer {
   text-align: center;
-  margin-top: 20px;
-  color: var(--text-muted);
-  font-size: 0.9em;
-  opacity: 0.7;
-  /* Also animate this */
-  animation: fadeInUp 1s ease-out 0.5s forwards; /* Delay start */
-  opacity: 0; /* Start hidden */
+  position: absolute;
+  bottom: 50px; /* MODIFIED: new end position */
+  left: 0;
+  right: 0;
+  color: #ccc; /* MODIFIED: Brighter for "Lights On" mode */
+  font-size: 1em;
+  font-weight: 500;
+  /* --- MODIFIED: Set initial state for animation --- */
+  opacity: 0;
+  transform: translateY(100px);
+  pointer-events: none;
+}
+
+/* --- NEW: End credits animation class --- */
+footer.run-credits {
+  /* Scroll up for 3s, then glow once after 1s delay */
+  animation: scrollUp 3s ease-out forwards, glowPulse 2s ease-in-out 1s 1;
+  color: var(--primary-color);
+  font-size: 1.2em;
+  font-weight: 600;
 }
 

@@ -3,41 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Movie Sync</title>
+  <title>LDR Cinema Night</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <main class="container">
-    <header>
-      <h1>LDR Movie Night 🍿</h1>
-      <p>Watch local videos in sync with your favorite person.</p>
-    </header>
+  <!-- Initial "Enter Cinema" button -->
+  <div class="controls-overlay">
+    <button id="enter-cinema-btn">Welcome to the Couple's Cinema 🫂🍿</button>
+  </div>
 
-    <div class="controls">
-      <label for="file-input">1. Load the <strong>exact</strong> same movie file:</label>
-      <input type="file" id="file-input" accept="video/mp4,video/x-m4v,video/webm,video/ogg">
+  <!-- The 3D Cinema Environment -->
+  <div class="viewport">
+    <div class="scene">
+      <div class="stage"></div>
+      <div class="big-wall">
+        
+        <!-- Your Movie Player is now the main screen -->
+        <div class="movie-container">
+          <!-- The file input controls are hidden initially -->
+          <div id="file-loader">
+              <h1>LDR Movie Night📺🍿</h1>
+              <p>Load the <strong>exact</strong> same movie file to begin.</p>
+              <p>Pro tip: Cuddle up close to your partner while watching the movie.🫂</p>
+              <input type="file" id="file-input" accept="video/mp4,video/x-m4v,video/webm,video/ogg">
+          </div>
+          
+          <video id="movie-player" controls></video>
+          <canvas id="clonePlayerCanvas"></canvas>
+        </div>
+
+      </div>
+      <div class="chairs-group">
+        <!-- Chair elements -->
+        <div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div>
+      </div>
+      <div class="chairs-group right">
+        <!-- Chair elements -->
+        <div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div><div class="chair"></div>
+      </div>
     </div>
+  </div>
 
-    <video id="movie-player" controls>
-      Your browser does not support the video tag. Please load a file to begin.
-    </video>
-  </main>
-
-  <!-- Add your new footer here -->
   <footer>
-    <p>made it for my Pasandida aurat 💞🫵 HB</p>
+    <p>Made it for my Pasandida aurat <i>"Subhangi Paul"</i>💞🫵 HB</p>
   </footer>
 
-  <!-- 
-    This script is served automatically by the Socket.io server.
-    It's what gives us the 'io()' function in app.js.
-  -->
+  <!-- SCRIPTS -->
+  <!-- Socket.IO (from your original project) -->
   <script src="/socket.io/socket.io.js"></script>
-  
-  <!-- This is your custom application logic -->
+  <!-- jQuery and GSAP (for the new animations) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+  <!-- Your application logic -->
   <script src="app.js"></script>
 
 </body>
 </html>
-
