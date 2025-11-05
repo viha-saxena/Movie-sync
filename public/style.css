@@ -45,7 +45,7 @@ body {
   background: black;
   display: flex;
   justify-content: center;
-  align-items: center; /* Corrected 'align: items' */
+  align-items: center;
 }
 
 .controls-overlay button {
@@ -210,19 +210,29 @@ body {
   text-align: center;
 }
 
-#movie-player {
+/* --- Player Styles (Both Local and YouTube) --- */
+/* THIS IS THE FIX: Target both the local player AND the iframe ID */
+#movie-player, 
+#youtube-player-container {
   width: 100%;
   height: 100%;
   background-color: #000;
   border: 3px solid #111;
   box-shadow: 0 0 30px rgba(3, 218, 198, 0.4);
-  /* Initially hidden until a file is loaded */
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.5s ease;
   position: relative; 
   z-index: 2; 
 }
+
+/* Ensure the iframe (which IS #youtube-player-container) is positioned correctly */
+#youtube-player-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 
 #clonePlayerCanvas {
   position: absolute;
@@ -242,19 +252,83 @@ body {
   pointer-events: none; /* Not clickable by default */
   transition: opacity 0.8s ease;
   position: absolute; /* Keep it centered */
+  width: 80%;
 }
 
 #file-loader h1 {
     color: var(--primary-color);
     margin-bottom: 8px;
-    /* --- MODIFIED: Added neon glow --- */
     text-shadow: 0 0 8px var(--primary-color), 0 0 16px rgba(3, 218, 198, 0.5);
 }
 
 #file-loader p {
     font-size: 1.1em;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 }
+
+.loader-option {
+  margin-bottom: 16px;
+}
+
+.loader-divider {
+  font-size: 0.9em;
+  color: #888;
+  margin-bottom: 16px;
+}
+
+/* --- NEW: YouTube URL Input Styles --- */
+#youtube-url-group {
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px; /* Space for quality selector */
+}
+
+#youtube-url {
+  flex-grow: 1;
+  background: #333;
+  border: 1px solid #555;
+  color: #fff;
+  padding: 10px;
+  border-radius: 6px 0 0 6px;
+  font-family: "Poppins", sans-serif;
+  outline: none;
+}
+
+#load-youtube-btn {
+  background-color: var(--primary-color);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 0 6px 6px 0;
+  color: #111;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  outline: none;
+}
+
+#load-youtube-btn:hover {
+  background-color: #fff;
+}
+
+/* --- NEW: Quality Selector Styles --- */
+#quality-selector-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9em;
+}
+
+#youtube-quality {
+  background: #333;
+  border: 1px solid #555;
+  color: #fff;
+  padding: 5px;
+  border-radius: 4px;
+  font-family: "Poppins", sans-serif;
+  outline: none;
+}
+
 
 input[type="file"]::file-selector-button {
   background-color: var(--primary-color);
@@ -269,7 +343,6 @@ input[type="file"]::file-selector-button {
 
 input[type="file"]::file-selector-button:hover {
   background-color: #fff;
-  transform: scale(1.05);
 }
 
 
@@ -302,7 +375,6 @@ input[type="file"]::file-selector-button:hover {
   background: linear-gradient(0deg, #460000, #220101);
   transform: rotateX(90deg) translateY(50px);
   border-radius: 0 0 15px 15px / 50%;
-  /* box-shadow: 1px 1em 3em 0.5em rgba(0, 0, 0, 0.8) inset, 0 -4px 0 rgba(255, 255, 255, 0.1) inset; */ /* MOVED */
 }
 
 .chair:before {
@@ -333,7 +405,6 @@ footer {
   color: #ccc; /* MODIFIED: Brighter for "Lights On" mode */
   font-size: 1em;
   font-weight: 500;
-  /* --- MODIFIED: Set initial state for animation --- */
   opacity: 0;
   transform: translateY(100px);
   pointer-events: none;

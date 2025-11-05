@@ -26,10 +26,41 @@
               <h1>LDR Movie Night📺🍿</h1>
               <p>Load the <strong>exact</strong> same movie file to begin.</p>
               <p>Pro tip: Cuddle up close to your partner while watching the movie.🫂</p>
-              <input type="file" id="file-input" accept="video/mp4,video/x-m4v,video/webm,video/ogg">
+              <p id="loader-subtitle">Load a file, or paste a YouTube URL.</p>
+              
+              <!-- Option 1: Local File -->
+              <div class="loader-option">
+                <input type="file" id="file-input" accept="video/mp4,video/x-m4v,video/webm,video/ogg">
+              </div>
+
+              <div class="loader-divider">or</div>
+
+              <!-- Option 2: YouTube URL -->
+              <div class="loader-option" id="youtube-loader">
+                <div id="youtube-url-group">
+                  <input type="text" id="youtube-url" placeholder="Paste YouTube URL...">
+                  <button id="load-youtube-btn">Load</button>
+                </div>
+                <!-- NEW: Quality Selector 
+                <div id="quality-selector-group">
+                  <label for="youtube-quality">Quality:</label>
+                  <select id="youtube-quality">
+                    <option value="hd720">720p</option>
+                    <option value="large">480p</option>
+                    <option value="medium">360p</option>
+                    <option value="default">Auto</option>
+                  </select>
+                </div> -->
+              </div>
           </div>
           
+          <!-- This is where the YouTube player will be injected by the API -->
+          <!-- The API REPLACES this div with an iframe, so the iframe will have id="youtube-player-container" -->
+          <div id="youtube-player-container"></div>
+          
+          <!-- This is your original local file player -->
           <video id="movie-player" controls></video>
+          
           <canvas id="clonePlayerCanvas"></canvas>
         </div>
 
@@ -46,7 +77,7 @@
   </div>
 
   <footer>
-    <p>Made it for my Pasandida aurat <i>"Subhangi Paul"</i>💞🫵 HB</p>
+    <p>made it for my Pasandida aurat swarthi 💞🫵 HB</p>
   </footer>
 
   <!-- SCRIPTS -->
@@ -55,8 +86,13 @@
   <!-- jQuery and GSAP (for the new animations) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+  
+  <!-- NEW: YouTube IFrame Player API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  
   <!-- Your application logic -->
   <script src="app.js"></script>
 
 </body>
 </html>
+
